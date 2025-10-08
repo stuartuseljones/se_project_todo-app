@@ -3,38 +3,37 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
-const addTodoPopup = document.querySelector("#add-todo-popup");
-const addTodoForm = addTodoPopup.querySelector(".popup__form");
-const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
+const addTodoPopupEl = document.querySelector("#add-todo-popup");
+const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
+const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
 
+const addTodoPopup = new PopupWithForm({
+  popupSelector: "#add-todo-popup",
+  handleFormSubmit: () => {},
+});
+addTodoPopup.setEventListeners();
+
 const section = new Section({
-  items: [], //pass initial todo's
-  renderer: () => {
-    addItem(todoElement);
-    //write the function
-    // const todo = generateTodo(todoData);
-    // todosList.append(todo);//use addItem method instead
-}
+  items: initialTodos, //pass initial todo's
+  renderer: (todoData) => {
+    const todoElement = generateTodo(todoData);
+    return todoElement;
   },
   containerSelector: ".todos_list",
 });
-//call section Instantce's renderItems Method
+section.renderItems();
 
-function addTodo(todoData) {
-  const todo = generateTodo(todoData);
-  todosList.append(todo); //use addItem method instead
-}
+// const openModal = (modal) => {
+//   modal.classList.add("popup_visible");
+// };
 
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-};
-
-const closeModal = (modal) => {
-  modal.classList.remove("popup_visible");
-};
+// const closeModal = (modal) => {
+//   modal.classList.remove("popup_visible");
+// };
 
 const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
@@ -43,12 +42,12 @@ const generateTodo = (data) => {
 };
 
 addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopup);
+  addTodoPopup.open();
 });
 
-addTodoCloseBtn.addEventListener("click", () => {
-  closeModal(addTodoPopup);
-});
+// addTodoCloseBtn.addEventListener("click", () => {
+//   closeModal(addTodoPopupEl);
+// });
 
 addTodoForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -61,14 +60,14 @@ addTodoForm.addEventListener("submit", (event) => {
 
   const id = uuidv4();
   const todoData = { name, date, id };
-  addTodo(todoData);
-  closeModal(addTodoPopup);
+  // addTodo(todoData);
+  addTodoPopup.close();
   newTodoValidator.resetValidation();
 });
 
-initialTodos.forEach((item) => {
-  addTodo(item);
-});
+// initialTodos.forEach((item) => {
+//   addTodo(item);
+// });
 
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();
