@@ -17,13 +17,15 @@ class Popup {
     }
   }
   setEventListeners() {
-    // this._popupCloseBtn.addEventListener("click", () => {
-    //   this.close();
-    // });
+    document.addEventListener("keyup", (evt) => {
+      this._handleEscapeClose(evt);
+    });
     this._popupElement.addEventListener("mousedown", (evt) => {
-if (||)
-  //TODO - set event listener for clicking outside modal, combined with escape key option to close the modal.
-})  }
+      if (!evt.target.closest(".popup__content")) {
+        this.close();
+      }
+    });
+  }
 }
 
 export default Popup;

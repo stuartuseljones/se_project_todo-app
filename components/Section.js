@@ -1,4 +1,4 @@
-//import necessary constants
+import Todo from "./Todo.js";
 
 class Section {
   constructor({ items, renderer, containerSelector }) {
@@ -9,6 +9,7 @@ class Section {
   renderItems() {
     this._items.forEach((item) => {
       const todoElement = this._renderer(item);
+
       this._container.append(todoElement);
     });
   }
