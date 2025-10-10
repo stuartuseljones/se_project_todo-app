@@ -10,12 +10,11 @@ class Section {
     this._items.forEach((item) => {
       const todoElement = this._renderer(item);
 
-      this._container.append(todoElement);
+      this.addItem(todoElement);
     });
   }
   addItem(element) {
     this._container.append(element);
-    //add element to the container
   }
 }
 
